@@ -1,5 +1,11 @@
 PyMuPDF
-faiss-cpu
-sentence-transformers
-gradio
+langchain-community
+langchain-huggingface
+python-dotenv
+google-genai
+
+langchain 
+langchain-core
+langchain-google-genai
 google-generativeai
+chromadb

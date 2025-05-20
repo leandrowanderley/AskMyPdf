@@ -3,7 +3,9 @@
 Projeto com o objetivo de estudar e compreender as diferenças entre LLMs e discutir seus resultados, ou seja, programação em pares com LLMs.
 
 # LLM utilizada
-- Gemini 2.0 Flash
+- Gemini 2.0 Flash: Corrigir erros e implementar funções.
+
+- Gemini 1.5 Flash: Saídas para perguntas sobre PDF carregado.
 
 # Funcionais:
 - Upload de PDF.
@@ -32,15 +34,17 @@ Usuário ↔ Interface ↔ Módulo PDF ↔ Indexador (Embeddings + Vector DB) �
 ```
 
 # # Módulos 
-- pdf_parser.py: responsável por extrair texto do PDF.
+- pdf_processor.py:
 
-- vector_store.py: armazena e consulta o conteúdo embeddado.
+- text_splitter.py:
 
-- query_handler.py: cuida do pipeline RAG (pergunta → busca → contexto → resposta).
+- vector_store.py:
+
+- question_answerer.py:
 
 - app.py: interface do usuário.
 
-- requirements.txt: requisitos para rodar o sistema, e utilizando (pip install) instala.
+- requirements.txt: requisitos para rodar o sistema, e utilizando `pip install -r requirements.txt`.
 
 - apikey.txt: possui a chave de api do Gemini para a leitura.
 
