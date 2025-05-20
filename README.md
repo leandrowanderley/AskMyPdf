@@ -3,7 +3,7 @@
 Projeto com o objetivo de estudar e compreender as diferenças entre LLMs e discutir seus resultados, ou seja, programação em pares com LLMs.
 
 # LLM utilizada
-- ChatGPT
+- Gemini 2.0 Flash
 
 # Funcionais:
 - Upload de PDF.
@@ -41,6 +41,8 @@ Usuário ↔ Interface ↔ Módulo PDF ↔ Indexador (Embeddings + Vector DB) �
 - app.py: interface do usuário.
 
 - requirements.txt: requisitos para rodar o sistema, e utilizando (pip install) instala.
+
+- apikey.txt: possui a chave de api do Gemini para a leitura.
 
 # # Fluxo
 1. Usuário envia um PDF.
