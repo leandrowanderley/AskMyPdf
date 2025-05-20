@@ -2,4 +2,4 @@ PyMuPDF
 faiss-cpu
 sentence-transformers
 gradio
-google-generativeai
+openai

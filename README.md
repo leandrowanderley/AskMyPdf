@@ -68,7 +68,7 @@ Testes de integração (ciclo completo: PDF → pergunta → resposta)
 
 Casos de teste:
 
- - PDF técnico com termos específicos
+ - PDF técnico com termos específico
 
  - Perguntas fora do escopo (espera-se uma resposta do tipo “não sei”)
 

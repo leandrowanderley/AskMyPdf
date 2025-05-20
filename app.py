@@ -1,26 +1,28 @@
-import gradio as gr
 from query_handler import QueryHandler
 
-handler = QueryHandler(gemini_api_key="SUA_CHAVE_GEMINI")
+def main():
+    with open("apikey.txt", "r") as f:
+        apikey = f.read().strip()
+    handler = QueryHandler(openai_api_key=apikey)
 
-def upload_pdf(file):
-    handler.process_pdf(file.name)
-    return "PDF carregado com sucesso."
+    pdf_path = input("Digite o caminho do arquivo PDF: ").strip()
+    try:
+        handler.process_pdf(pdf_path)
+        print("PDF carregado com sucesso.")
+    except Exception as e:
+        print(f"Erro ao carregar o PDF: {e}")
+        return
 
-def ask_question(question):
-    return handler.ask(question)
+    while True:
+        question = input("\nFaça uma pergunta (ou digite 'sair' para encerrar): ").strip()
+        if question.lower() == "sair":
+            print("Encerrando o programa.")
+            break
+        try:
+            resposta = handler.ask(question)
+            print(f"Resposta: {resposta}")
+        except Exception as e:
+            print(f"Erro ao obter resposta: {e}")
 
-with gr.Blocks() as demo:
-    gr.Markdown("# Chat com seu PDF")
-    with gr.Row():
-        pdf_input = gr.File(label="Envie um PDF")
-        upload_button = gr.Button("Carregar PDF")
-    upload_status = gr.Textbox(label="Status")
-    upload_button.click(upload_pdf, inputs=pdf_input, outputs=upload_status)
-
-    question_input = gr.Textbox(label="Faça uma pergunta")
-    answer_output = gr.Textbox(label="Resposta")
-    ask_button = gr.Button("Perguntar")
-    ask_button.click(ask_question, inputs=question_input, outputs=answer_output)
-
-demo.launch()
+if __name__ == "__main__":
+    main()

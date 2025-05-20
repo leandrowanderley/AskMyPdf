@@ -1,12 +1,12 @@
 from vector_store import VectorStore
 from pdf_parser import extract_text_from_pdf
-import google.generativeai as genai
+import openai
+import os
 
 class QueryHandler:
-    def __init__(self, gemini_api_key):
-        genai.configure(api_key=gemini_api_key)
+    def __init__(self, openai_api_key):
+        openai.api_key = openai_api_key
         self.vector_store = VectorStore()
-        self.model = genai.GenerativeModel('gemini-pro')
 
     def process_pdf(self, file_path):
         text = extract_text_from_pdf(file_path)
@@ -16,6 +16,18 @@ class QueryHandler:
     def ask(self, question):
         context_chunks = self.vector_store.query(question)
         context = "\n".join(context_chunks)
-        prompt = f"Com base apenas no seguinte conteúdo do PDF, responda a pergunta:\n\n{context}\n\nPergunta: {question}"
-        response = self.model.generate_content(prompt)
-        return response.text
+
+        system_message = "Você é um assistente útil que responde perguntas usando somente o conteúdo do PDF fornecido."
+        user_message = f"Baseie sua resposta apenas neste conteúdo:\n\n{context}\n\nPergunta: {question}"
+
+        response = openai.ChatCompletion.create(
+            model="gpt-4",  # ou "gpt-3.5-turbo"
+            messages=[
+                {"role": "system", "content": system_message},
+                {"role": "user", "content": user_message}
+            ],
+            temperature=0,
+            max_tokens=500,
+        )
+
+        return response.choices[0].message['content'].strip()
