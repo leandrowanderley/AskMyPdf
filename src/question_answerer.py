@@ -1,5 +1,5 @@
 from langchain.prompts import PromptTemplate
-from langchain_core.runnables import chain, RunnablePassthrough as LCRunnablePassthrough
+from langchain_core.runnables import chain, RunnablePassthrough
 from langchain_google_genai import ChatGoogleGenerativeAI
 import google.generativeai as genai
 
@@ -30,7 +30,7 @@ def answer_question(vectorstore, question, gemini_api_key):
     prompt = PromptTemplate.from_template(template)
 
     retrieval_chain = (
-        {"context": vectorstore.as_retriever(search_kwargs={"k": 3}), "question": chain.LCRunnablePassthrough()}
+        {"context": vectorstore.as_retriever(search_kwargs={"k": 4}), "question": RunnablePassthrough()}
         | prompt
         | model
     )

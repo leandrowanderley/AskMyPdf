@@ -3,76 +3,69 @@
 Projeto com o objetivo de estudar e compreender as diferenças entre LLMs e discutir seus resultados, ou seja, programação em pares com LLMs.
 
 # LLM utilizada
-- Gemini 2.0 Flash: Corrigir erros e implementar funções.
+ - Gemini 2.0 Flash: Corrigir erros e implementar funções.
 
-- Gemini 1.5 Flash: Saídas para perguntas sobre PDF carregado.
+ - Gemini 1.5 Flash: Saídas para perguntas sobre PDF carregado.
 
-# Funcionais:
-- Upload de PDF.
+# Funcionalidades:
+ - Upload de PDF.
 
-- Processamento e extração de texto do PDF.
+ - Processamento e extração de texto do PDF.
 
-- Indexação dos dados em um sistema vetorial (ex: FAISS).
+ - Indexação dos dados em um sistema vetorial (ex: FAISS).
 
-- Interface de chat para interação.
+ - Interface web para interação.
 
-- Resposta baseada no conteúdo do PDF.
-
-# Não-funcionais:
-- Tempo de resposta aceitável (≤ 5s).
-
-- Interface intuitiva.
-
-- Registro de interações e respostas para fins de relatório.
+ - Resposta baseada no conteúdo do PDF.
 
 # Projeto da solução
 
-# # Arquitetura do projeto
+## Arquitetura do projeto
 
 ```
-Usuário ↔ Interface ↔ Módulo PDF ↔ Indexador (Embeddings + Vector DB) ↔ RAG ↔ LLM ↔ Resposta
+Usuário ↔ Interface (Gradio) ↔ Módulo de Processamento de PDF ↔ Indexador (Embeddings + Chroma) ↔ RAG ↔ LLM (Gemini) ↔ Resposta
 ```
 
-# # Módulos 
-- pdf_processor.py:
+## Módulos 
+- `app.py`: Define a interface do usuário com Gradio. Coordena o fluxo de dados entre os módulos. Carrega a chave da API do Gemini.
 
-- text_splitter.py:
+- `pdf_processor.py`: Responsável por extrair o texto do arquivo PDF usando PyMuPDF (`fitz`)
 
-- vector_store.py:
+ - `text_splitter.py`: Divide o texto extraído em chunks menores usando `CharacterTextSplitter` do Langchain.
 
-- question_answerer.py:
+ - `vector_store.py`: Cria o banco de dados vetorial (Chroma) a partir dos chunks de texto e os embeddings gerados pelo Hugging Face.
 
-- app.py: interface do usuário.
+ - `question_answerer.py`: Contém a lógica para responder às perguntas usando o modelo Gemini, o banco de dados vetorial e o padrão RAG (Retrieval Augmented Generation).
 
-- requirements.txt: requisitos para rodar o sistema, e utilizando `pip install -r requirements.txt`.
+ - `requirements.txt`: Lista as dependências do projeto (Langchain, Gradio, PyPDF2, etc.). Use `pip install -r requirements.txt` para instalar.
 
-- apikey.txt: possui a chave de api do Gemini para a leitura.
+ - `apikey.txt`: Arquivo para armazenar a chave de API do Gemini.
 
-# # Fluxo
-1. Usuário envia um PDF.
+## Fluxo
+ 1. O usuário carrega um arquivo PDF e insere uma pergunta na interface do Gradio.
 
-2. Sistema extrai texto e divide em chunks.
+ 2. O sistema extrai o texto do PDF usando o módulo `pdf_processor.py`.
 
-3. Gera embeddings e armazena no banco vetorial.
+ 3. O texto é dividido em chunks menores pelo módulo `text_splitter.py`.
 
-4. Usuário faz uma pergunta.
+ 4. Embeddings são gerados para os chunks e armazenados no banco de dados vetorial Chroma usando o módulo `vectorstore.py`.
 
-5. Sistema recupera os chunks mais relevantes via similaridade vetorial.
+ 5. Quando o usuário faz uma pergunta, o sistema recupera os chunks mais relevantes do banco de dados vetorial.
 
-6. Gera prompt com os chunks e envia ao LLM.
+ 6. Um prompt é criado com os chunks recuperados e enviado para o modelo Gemini (via `question_answerer.py`).
 
-7. Retorna resposta ao usuário.
+ 7. O modelo Gemini gera a resposta, que é exibida na interface do Gradio.
 
 # Programação em pares
 
-Durante a implementação foi utilizado uma LLM como dupla, onde a LLM escreve o código, análisa, e realiza mudanças no código que eu pedir, como otimização do código.
+Durante a implementação, foi utilizada uma LLM, Gemini 2.0 Flash como parceiro de programação para escrever código, analisar problemas e realizar alterações conforme solicitado.
 
 # Testes
-Testes unitários para cada módulo (pdf_parser, vector_store, etc.)
+ - Testes unitários para cada módulo (`pdf_processor.py`, `vectorstore.py`, etc.).
 
-Testes de integração (ciclo completo: PDF → pergunta → resposta)
+ - Testes de integração (fluxo completo: PDF → pergunta → resposta).
 
-Casos de teste:
+## Casos de teste:
 
  - PDF técnico com termos específico
 
